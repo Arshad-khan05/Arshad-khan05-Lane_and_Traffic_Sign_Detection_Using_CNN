@@ -42,7 +42,7 @@ class YOLO(object):
         self.setup_fonts()
         self.car_original_height = 60
         self.f = 250  # focal length
-        self.alert_audio = sa.WaveObject.from_wave_file('alert_audio/alert.wav')
+        self.alert_audio = sa.WaveObject.from_wave_file('audio/alert.wav')
         self.alert_audio_playing_obj = None
         self.alert_audio_playing_obj_initialized = False
         self.alert_message = "Alert"

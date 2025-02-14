@@ -250,6 +250,12 @@ def detect_video(video_path, yolo_detector):
 
         if not ret:
             cap.release()
+            cv2.destroyWindow("Final Output")
+            cv2.destroyWindow("Steering Wheel")
+            cv2.destroyWindow("Lane Detection")
+            cv2.destroyWindow("Video Feed")
+            cv2.destroyAllWindows()
+
             cv2.destroyAllWindows()
             break
 

@@ -249,7 +249,8 @@ def detect_video(video_path, yolo_detector):
         ret, frame = cap.read()
 
         if not ret:
-
+            cap.release()
+            cv2.destroyAllWindows()
             break
 
         if frame_counter == frame_rate:
@@ -291,8 +292,8 @@ def detect_video(video_path, yolo_detector):
             ff = final_frame.copy()
 
             try:
-                
-                final_frame = laneDetector(frame, False)
+                laneDetector(frame, True)
+                final_frame = laneDetector(vehicle_frame, False)
             except Exception as e:
                 print(e)
                 
@@ -305,7 +306,8 @@ def detect_video(video_path, yolo_detector):
             frame_counter = 0
 
             if cv2.waitKey(1) & 0xFF == ord('q'):
-
+                cap.release()
+                cv2.destroyAllWindows()
                 break
         else:
             frame_counter += 1
@@ -319,6 +321,7 @@ def detect_image(file_path, yolo_detector):
     rows, cols = steering_wheel.shape
 
     # Load the autopilot model
+    autopilot_model = Model(r"models\Stearing.h5")
     
 
     # Read the image
@@ -362,8 +365,8 @@ def detect_image(file_path, yolo_detector):
     ff = final_frame.copy()
 
     try:
-        
-        final_frame = laneDetector(frame, False)
+        laneDetector(frame, True)
+        final_frame = laneDetector(vehicle_frame, False)
     except Exception as e:
         print(e)
         

@@ -166,9 +166,25 @@ class YOLO(object):
                     text = '{} {:.2f} {}'.format('d =', d, 'ft')
                     x, y = (left + id + 10, top + id - 25)
                     _,_,w, h = self.distance_font.getbbox(text)
-                    draw.rectangle([left + id, top + id, right - id, bottom - id], outline=(255, 0, 0))
-                    draw.rectangle((x, y, x + w, y + h), fill='black')
-                    draw.text((x, y), text, fill='white', font=self.other_vehicle_distance_font)
+                    # Ensure bounding boxes are within image bounds
+                    image_width, image_height = image.size  # Get image dimensions
+
+                    # Normalize and clamp values to stay within bounds
+                    left = max(0, min(image_width - 1, left))
+                    right = max(0, min(image_width - 1, right))
+                    top = max(0, min(image_height - 1, top))
+                    bottom = max(0, min(image_height - 1, bottom))
+
+                    # Ensure left < right and top < bottom
+                    if left < right and top < bottom:
+                        margin = 2  # Add margin for visualization
+                        draw.rectangle([left + margin, top + margin, right - margin, bottom - margin], outline=(255, 0, 0))
+                        # draw.rectangle([left + id, top + id, right - id, bottom - id], outline=(255, 0, 0))
+                        draw.rectangle((x, y, x + w, y + h), fill='black')
+                        draw.text((x, y), text, fill='white', font=self.other_vehicle_distance_font)
+                    else:
+                        print(f"Skipping invalid bounding box: Left={left}, Right={right}, Top={top}, Bottom={bottom}")
+
 
         car_original_height = self.car_original_height
         f = self.f
